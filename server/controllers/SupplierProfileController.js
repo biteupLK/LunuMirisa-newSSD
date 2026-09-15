@@ -32,8 +32,10 @@ router.post("/AddSupplier", async (req, res) => {
         
         const url = `${process.env.BASE_URL}`;
         const savedSupplier = await newSupplier.save();
+        const safeSupplier = savedSupplier.toObject();
+        delete safeSupplier.password;
         await sendEmail(email, "Login Credentials" + "This is your password: "+password,url);
-        res.status(201).json(savedSupplier);
+        res.status(201).json(safeSupplier);
     } catch (err) {
         res.status(500).json({ error: 'Internal Server Error', details: err });
     }
@@ -43,7 +45,7 @@ router.post("/AddSupplier", async (req, res) => {
 // Retrieve all supplier profiles
 router.get("/ShowSupplierProfiles", async (req, res) => {
     try {
-        const suppliers = await SupplierProfile.find({});
+        const suppliers = await SupplierProfile.find({}).select("-password");
         res.json(suppliers);
     } catch (err) {
         res.status(500).json({ error: 'Internal Server Error', details: err });
@@ -53,7 +55,7 @@ router.get("/ShowSupplierProfiles", async (req, res) => {
 // Retrieve a single supplier profile by ID
 router.get("/ShowSupplierProfile/:id", async (req, res) => {
     try {
-        const supplier = await SupplierProfile.findById(req.params.id);
+        const supplier = await SupplierProfile.findById(req.params.id).select("-password");
         if (!supplier) return res.status(404).json({ error: 'Supplier Not Found' });
         res.json(supplier);
     } catch (err) {
@@ -71,7 +73,9 @@ router.put("/UpdateSupplierProfile/:id", async (req, res) => {
             { new: true }
         );
         if (!updatedSupplier) return res.status(404).json({ error: 'Supplier Not Found' });
-        res.json(updatedSupplier);
+        const safeSupplier = updatedSupplier.toObject();
+        delete safeSupplier.password;
+        res.json(safeSupplier);
     } catch (err) {
         res.status(500).json({ error: 'Internal Server Error', details: err });
     }
@@ -100,7 +104,9 @@ router.post("/SignInSupplier", async (req, res) => {
   
         // Direct string comparison for employees
         if (isCorrect) {
-            return res.status(205).json({ message: 'Login successful', user: supplier, userId: supplier._id });
+            const safeSupplier = supplier.toObject();
+            delete safeSupplier.password;
+            return res.status(205).json({ message: 'Login successful', user: safeSupplier, userId: supplier._id });
 
         }}
 
