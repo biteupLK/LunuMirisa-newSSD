@@ -91,6 +91,10 @@ router.delete("/DeleteSupplierProfile/:id", async (req, res) => {
 router.post("/SignInSupplier", async (req, res) => {
     const { email, password } = req.body;
 
+  if (typeof email !== 'string' || typeof password !== 'string' || !email.trim() || !password) {
+    return res.status(400).json({ message: 'Email and password are required' });
+  }
+
   console.log('Login attempt:', { email, password });
 
   try {
