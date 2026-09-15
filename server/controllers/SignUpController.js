@@ -94,7 +94,7 @@ router.put("/updateUser/:id", async (req, res) => {
 
 router.get("/allUsers", async (req, res) => {
     try {
-        const users = await UserModel.find();
+        const users = await UserModel.find().select("-password");
         res.status(200).send({ users });
     } catch (error) {
         console.error(error);
