@@ -4,6 +4,8 @@ const Token = require("../models/Token"); // Ensure correct path
 const crypto = require("crypto");
 const sendEmail = require("../util/Email");
 const bcrypt = require("bcryptjs");
+const protect = require("../middleware/AuthMiddleware");
+const { requireOwnUser } = require("../middleware/AuthMiddleware");
 require('dotenv').config();
 
 // Route to create a user
@@ -67,32 +69,31 @@ router.get("/users/:id/verify/:token", async (req, res) => {
     }
 });
 
-router.put("/updateUser/:id", async (req, res) => {
+router.put("/updateUser/:id", protect, requireOwnUser, async (req, res) => {
     try {
         const userId = req.params.id;
         const { firstName, lastName, phone, address } = req.body;
-        console.log(firstName,lastName,phone,address)
-        // Find the user by ID
         const user = await UserModel.findById(userId);
         if (!user) return res.status(404).send({ message: "User not found" });
 
-        // Update the user fields (excluding email)
         user.firstName = firstName || user.firstName;
         user.lastName = lastName || user.lastName;
         user.phone = phone || user.phone;
         user.address = address || user.address;
 
-        // Save the updated user details
         await user.save();
 
-        res.status(200).send({ message: "User details updated successfully", user });
+        const safeUser = user.toObject();
+        delete safeUser.password;
+
+        res.status(200).send({ message: "User details updated successfully", user: safeUser });
     } catch (error) {
         console.error(error);
         res.status(500).send({ message: "Internal Server Error" });
     }
 });
 
-router.get("/allUsers", async (req, res) => {
+router.get("/allUsers", protect, async (req, res) => {
     try {
         const users = await UserModel.find();
         res.status(200).send({ users });
@@ -102,10 +103,11 @@ router.get("/allUsers", async (req, res) => {
     }
 });
 
-router.delete("/deleteSiteUsers/:id", async (req, res) => {
+router.delete("/deleteSiteUsers/:id", protect, async (req, res) => {
     const { id } = req.params;
     try {
-        await UserModel.findByIdAndDelete(id);
+        const deleted = await UserModel.findByIdAndDelete(id);
+        if (!deleted) return res.status(404).send({ message: "User not found" });
         res.status(200).send({ message: "User deleted successfully" });
     } catch (error) {
         console.error(error);

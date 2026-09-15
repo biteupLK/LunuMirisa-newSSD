@@ -49,6 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.use('/api', USER);
+app.use('/', USER);
 app.use('/', EMPLOYEE);
 app.use('/', IMAGE);
 app.use('/', LOGIN);

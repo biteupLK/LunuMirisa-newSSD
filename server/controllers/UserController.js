@@ -2,51 +2,56 @@ const express = require('express');
 const router = express.Router();
 const { UserModel } = require('../models/Users');
 const protect = require('../middleware/AuthMiddleware');
+const { requireOwnUser } = require('../middleware/AuthMiddleware');
 
-// router.post("/createUserb", (req, res) => {
-//     User.create(req.body)
-//         .then(users => res.json(users))
-//         .catch(err => res.status(500).json(err));
-// });
+const SAFE_USER_FIELDS = '_id firstName lastName email phone address verified';
 
-// router.get("/",(req,res) => {
-
-//     User.find({})
-//     .then(users => res.json(users))
-//     .catch(err => res.json(err))
-
-// })
-
-router.get("/getUser/:id",(req,res) => {
-
-    const userId = req.params.id;
-    UserModel.findById({_id: userId})
-    .then(users => res.json(users))
-    .catch(err => res.json(err))
-})
-
-router.put("/updatkeUser/:id",(req,res) => {
-    
-
-    const userId = req.params.id;
-    UserModel.findByIdAndUpdate({_id: userId}, {name: req.body.name, email: req.body.email, age: req.body.age})
-    .then(users => res.json(users))
-    .catch(err => res.json(err))
-
-})
-
-router.delete("/deleteUser/:id",(req,res) => {
-
-    const userId = req.params.id;
-    UserModel.findByIdAndDelete({_id: userId})
-    .then(users => res.json(users))
-    .catch(err => res.json(err))
-
-})
-
-router.get('/countAllUsers', async (req, res) => {
+router.get("/getUser/:id", protect, requireOwnUser, async (req, res) => {
     try {
-        const userCount = await UserModel.countDocuments(); // Count all documents in the User collection
+        const user = await UserModel.findById(req.params.id).select(SAFE_USER_FIELDS);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        return res.json(user);
+    } catch (err) {
+        return res.status(500).json({ message: 'Failed to retrieve user' });
+    }
+});
+
+router.put("/updatkeUser/:id", protect, requireOwnUser, async (req, res) => {
+    try {
+        const { firstName, lastName, phone, address } = req.body;
+        const user = await UserModel.findByIdAndUpdate(
+            req.params.id,
+            { firstName, lastName, phone, address },
+            { new: true }
+        ).select(SAFE_USER_FIELDS);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        return res.json(user);
+    } catch (err) {
+        return res.status(500).json({ message: 'Failed to update user' });
+    }
+});
+
+router.delete("/deleteUser/:id", protect, requireOwnUser, async (req, res) => {
+    try {
+        const user = await UserModel.findByIdAndDelete(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        return res.json({ message: 'User deleted successfully' });
+    } catch (err) {
+        return res.status(500).json({ message: 'Failed to delete user' });
+    }
+});
+
+router.get('/countAllUsers', protect, async (req, res) => {
+    try {
+        const userCount = await UserModel.countDocuments();
         res.status(200).json({ count: userCount });
     } catch (err) {
         res.status(500).json({ error: 'Failed to count users' });
