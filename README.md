@@ -9,7 +9,7 @@
 | 1 | [Member 1 Name] | [e.g. ITXXXXXXX] | - |
 | 2 | L.S.B Hemarathne | IT22134776 | Sensitive Data Exposure + Security Misconfiguration + CORS, Broken Authentication, Unrestricted File Upload |
 | 3 | B.K.H.M.B.L Herath | IT22557056 | Broken Access Control in cart operations, Google authentication and protected routes, secure user-ID resolution |
-| 4 | [Member 4 Name] | [e.g. ITXXXXXXX] | - |
+| 4 | H.I.B Wickramarathne | IT22239198 | Broken Access Control on user profile APIs, password hash exposure in API responses, NoSQL operator and regex injection |
 
 > Replace placeholders above before submission. Individual contribution will be assessed in viva.
 
@@ -45,6 +45,9 @@ Full technical report: [`SECURITY_FIXES_IT22134776.md`](./SECURITY_FIXES_IT22134
 | 4 | - | OAuth env loading (`c74dea7d`) - `server/server.js:1` dotenv path fix for `GOOGLE_CLIENT_ID` | **Fixed** | `c74dea7d` |
 | 5 | A01 | **Broken Access Control in cart operations** - cart endpoints accepted client-supplied user IDs, allowing users to access or modify cart data without reliable ownership checks | **Fixed** | `92ab0199` |
 | 6 | A07 | **Authentication and user identity verification** - cart routes lacked consistent authentication and did not resolve the application user from a verified Google token; unused client-side user-fetching logic was also removed | **Fixed** | `92ab0199`, `a27d265c` |
+| 7 | A01 | **Broken Access Control on user profile APIs** - `GET /getUser/:id`, `PUT /updateUser/:id` and related user routes allowed any caller to read or modify another user's record | **Fixed** | `7a081999` |
+| 8 | A01 | **Excessive data exposure** - `GET /allUsers`, `GET /employees` and supplier profile endpoints returned password hashes to any caller | **Fixed** | `66104668` |
+| 9 | A03 | **NoSQL operator and regex injection** - login selectors accepted Mongo operators in JSON, and `/orders/:userId/:date` compiled unsanitized date input with `new RegExp` | **Fixed** | `c9338c30` |
 
 Tools used per assignment references: `OWASP ZAP`, `OWASP Dependency-Check`, `sqlmap`, `OWASP Top 10`.
 
@@ -82,6 +85,9 @@ curl -X POST http://localhost:3000/loginUser -H "Content-Type: application/json"
 
 ```bash
 git log --oneline feat/security-hardening
+# c9338c30 fix(security): sanitize query inputs to block operator and regex injection
+# 66104668 fix(security): omit password hashes from API responses
+# 7a081999 fix(security): restrict user profile access to the authenticated owner
 # a27d265c feat: Remove unused user fetching logic and related state management
 # 92ab0199 feat: Refactor cart functionality and user authentication flow
 # 26a7ab45 docs(security): add detailed hardening report...
@@ -91,7 +97,7 @@ git log --oneline feat/security-hardening
 # 9388acae fix(security): harden secrets and CORS config...
 ```
 
-The security hardening work is recorded in separate commits. The cart authentication and authorization changes are documented in `92ab0199` and the follow-up cleanup in `a27d265c`.
+The security hardening work is recorded in separate commits. The cart authentication and authorization changes are documented in `92ab0199` and the follow-up cleanup in `a27d265c`. User profile access control, password-hash omission, and query sanitization are documented in `7a081999`, `66104668`, and `c9338c30`.
 
 ## 8. Deliverables Checklist (assignment)
 
