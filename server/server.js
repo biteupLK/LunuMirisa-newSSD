@@ -45,6 +45,7 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json({ limit: '100kb' }));
+app.use(require('./middleware/mongoSanitize'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
