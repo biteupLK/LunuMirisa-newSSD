@@ -19,7 +19,7 @@ router.post('/addemployee', async (req, res) => {
 // Get all employees
 router.get('/employees', async (req, res) => {
     try {
-        const employees = await AddEmployeeModel.find();
+        const employees = await AddEmployeeModel.find().select('-password');
         res.status(200).json(employees);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching employees', error });
@@ -30,7 +30,7 @@ router.get('/employees', async (req, res) => {
 router.get('/employee/:userId', async (req, res) => {
     const { userId } = req.params;
     try {
-        const employee = await AddEmployeeModel.findById(userId);
+        const employee = await AddEmployeeModel.findById(userId).select('-password');
         if (employee) {
             res.status(200).json(employee);
         } else {
