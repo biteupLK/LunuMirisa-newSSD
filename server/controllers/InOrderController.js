@@ -19,10 +19,20 @@ router.get("/ShowMyOrders/:userId", (req, res) => {
 router.get('/orders/:userId/:date', (req, res) => {
     const userId = req.params.userId;
     const date = req.params.date;
-      
+
+    if (typeof userId !== 'string' || typeof date !== 'string') {
+        return res.status(400).json({ message: 'Invalid order lookup parameters' });
+    }
+
+    if (!/^[0-9T:.Z+-]{1,40}$/.test(date)) {
+        return res.status(400).json({ message: 'Invalid date' });
+    }
+
+    const escapedDate = date.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
     InOrder.find({
         userId,
-        date: { $regex: new RegExp(`^${date}`) } // Convert the date string to a Date object
+        date: { $regex: `^${escapedDate}` }
     })
     .then(orders => res.json(orders))
     .catch(err => res.status(500).json(err));

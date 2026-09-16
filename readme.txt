@@ -5,7 +5,7 @@ Member names and index numbers:
 1. [Member 1 Name] - [ITXXXXXXX]
 2. [L.S.B Hemarathne] - [IT22134776]
 3. [Member 3 Name] - [IT22557056]
-4. [Member 4 Name] - [ITXXXXXXX]
+4. [H.I.B Wickramarathne] - [IT22239198]
 
 Github link to the original project:
 https://github.com/akilaManu-MaHiTo/LunuMirisa
@@ -14,7 +14,7 @@ Github link to the modified project after fixing the vulnerabilities:
 https://github.com/biteupLK/LunuMirisa-newSSD
 Branch: feat/security-hardening
 Commit history: https://github.com/biteupLK/LunuMirisa-newSSD/commits/feat/security-hardening
-Detailed commits: 9388acae, 4adaee80, af14973b, c74dea7d, 26a7ab45
+Detailed commits: 9388acae, 4adaee80, af14973b, c74dea7d, 26a7ab45, 7a081999, 66104668, c9338c30
 
 Link to a Youtube video (maximum 20 minutes) describing the vulnerabilities and the fixes done and the OAuth/Open ID connect implementation:
 https://youtu.be/ 
