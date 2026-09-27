@@ -6,7 +6,7 @@
 
 | # | Name | Index Number | Contribution |
 |---|------|--------------|--------------|
-| 1 | [A.M Senarathne] | [ IT22262554] | - |
+| 1 | A.M Senarathne | IT22262554 | Google authentication with Google Identity Services, protected-route authentication middleware, authenticated user API endpoint, client-side Google login integration, and API route restructuring |
 | 2 | L.S.B Hemarathne | IT22134776 | Sensitive Data Exposure + Security Misconfiguration + CORS, Broken Authentication, Unrestricted File Upload |
 | 3 | B.K.H.M.B.L Herath | IT22557056 | Broken Access Control in cart operations, Google authentication and protected routes, secure user-ID resolution |
 | 4 | H.I.B Wickramarathne | IT22239198 | Broken Access Control on user profile APIs, password hash exposure in API responses, NoSQL operator and regex injection |
@@ -85,6 +85,7 @@ curl -X POST http://localhost:3000/loginUser -H "Content-Type: application/json"
 
 ```bash
 git log --oneline feat/security-hardening
+# 6950def7 Merge pull request #1: integrate Google authentication and update API structure (Akila Manujith)
 # c9338c30 fix(security): sanitize query inputs to block operator and regex injection
 # 66104668 fix(security): omit password hashes from API responses
 # 7a081999 fix(security): restrict user profile access to the authenticated owner
