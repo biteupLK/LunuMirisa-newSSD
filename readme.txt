@@ -2,9 +2,9 @@ SE4030 - Secure Software Development - Assignment
 LunuMirisa-newSSD
 
 Member names and index numbers:
-1. [Member 1 Name] - [ITXXXXXXX]
+1. [A.M Senarathne] - [IT22262554]
 2. [L.S.B Hemarathne] - [IT22134776]
-3. [Member 3 Name] - [IT22557056]
+3. [B.K.H.M.B.L Herath] - [IT22557056]
 4. [H.I.B Wickramarathne] - [IT22239198]
 
 Github link to the original project:

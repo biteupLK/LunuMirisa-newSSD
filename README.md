@@ -6,7 +6,7 @@
 
 | # | Name | Index Number | Contribution |
 |---|------|--------------|--------------|
-| 1 | [Member 1 Name] | [e.g. ITXXXXXXX] | - |
+| 1 | [A.M Senarathne] | [ IT22262554] | - |
 | 2 | L.S.B Hemarathne | IT22134776 | Sensitive Data Exposure + Security Misconfiguration + CORS, Broken Authentication, Unrestricted File Upload |
 | 3 | B.K.H.M.B.L Herath | IT22557056 | Broken Access Control in cart operations, Google authentication and protected routes, secure user-ID resolution |
 | 4 | H.I.B Wickramarathne | IT22239198 | Broken Access Control on user profile APIs, password hash exposure in API responses, NoSQL operator and regex injection |
