@@ -17,10 +17,9 @@
 
 *   **Original project (before fixes):** https://github.com/akilaManu-MaHiTo/LunuMirisa  
 *   **Modified project (after fixing vulnerabilities):** https://github.com/biteupLK/LunuMirisa-newSSD  
-    *Branch for this submission:* `feat/security-hardening`  
+    *Branch for this submission:* `main` (all security-hardening branches listed below are merged into `main`)  
     ```bash
     git clone https://github.com/biteupLK/LunuMirisa-newSSD.git
-    git checkout feat/security-hardening
     git log --oneline  # detailed commit messages required for marking
     ```
 
@@ -84,26 +83,26 @@ curl -X POST http://localhost:3000/loginUser -H "Content-Type: application/json"
 ## 7. Commit History (evidence)
 
 ```bash
-git log --oneline feat/security-hardening
-# 6950def7 Merge pull request #1: integrate Google authentication and update API structure (Akila Manujith)
-# c9338c30 fix(security): sanitize query inputs to block operator and regex injection
-# 66104668 fix(security): omit password hashes from API responses
-# 7a081999 fix(security): restrict user profile access to the authenticated owner
-# a27d265c feat: Remove unused user fetching logic and related state management
-# 92ab0199 feat: Refactor cart functionality and user authentication flow
-# 26a7ab45 docs(security): add detailed hardening report...
+git log --oneline main
+# 1a80ceef Merge pull request #7 from biteupLK/fix/sanitize-query-inputs
+# 32e980bd Merge pull request #6 from biteupLK/fix/restrict-user-profile-access
+# efbb1f6d Merge pull request #5 from biteupLK/fix/omit-password-hashes-from-api
+# 25333962 fix(security): omit password hashes from API responses
+# 0dba41e0 fix: clarify broken access control and authentication issues in cart operations
+# a31036a6 security fixes update
 # c74dea7d fix(oauth): ensure dotenv loads from server/.env...
 # af14973b fix(security): harden file uploads...
 # 4adaee80 fix(security): secure authentication with bcrypt...
 # 9388acae fix(security): harden secrets and CORS config...
 ```
 
-The security hardening work is recorded in separate commits. The cart authentication and authorization changes are documented in `92ab0199` and the follow-up cleanup in `a27d265c`. User profile access control, password-hash omission, and query sanitization are documented in `7a081999`, `66104668`, and `c9338c30`.
+The security hardening work is recorded across multiple feature branches, each merged into `main` via a pull request (see PR #5, #6, #7 above). Cart authentication/authorization changes are in `92ab0199` and `0dba41e0`. User profile access control, password-hash omission, and query sanitization are merged via PR #6, #5, and #7 respectively. Full commit-by-commit detail is in [`SECURITY_FIXES_IT22134776.md`](./SECURITY_FIXES_IT22134776.md).
 
 ## 8. Deliverables Checklist (assignment)
 
-- [x] `README.md` + `readme.txt` (this file) with members, links, video
-- [x] `SECURITY_FIXES.md` detailed report
+- [x] `README.md` + `readme.txt` (this file) with members, links
+- [x] `SECURITY_FIXES_IT22134776.md` detailed report
+- [ ] Record YouTube video (max 20 min) and paste link into section 3
 - [ ] Zip `readme.txt` + `Report.pdf` to CourseWeb
 - [ ] Prepare viva: individual contributions
 
